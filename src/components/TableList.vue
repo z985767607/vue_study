@@ -1,4 +1,4 @@
-<template>
+<template>git
   <div id="demo">
     <div class="chectoutid">
       <input placeholder="id查询" style="width:200px;height:20px;" id="searchid" v-model="search"/>
@@ -30,9 +30,9 @@
         </thead>
         <tbody>
           <tr v-for="item in items" class="trs">
-            <td class="tds" id="col0" v-html="item.id">{{item.id}}</td>
+            <td class="tds" id="col0" >{{item.id}}</td>
             <td class="tds" v-html="item.classify">{{item.classify}}</td>
-            <td class="tds" v-html="item.author">{{item.author}}</td>
+            <td class="tds" v-html="item.author" @click="clickdel(item.id)">{{item.author}}</td>
           </tr>
         </tbody>
       </table>
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
     export default {
       name: "TableList",
 
@@ -60,6 +62,7 @@
       },
       */
       mounted() {
+        debugger
         this.fetchTables()
       },
       methods: {
@@ -69,7 +72,23 @@
             .then(json => {
             //this.tables = json[0]
             this.tables = json;
+            console.log("我请求的数据："+json)
         })
+        },
+        clickdel(id) {
+          console.log("-------")
+          debugger
+          fetch('http://localhost:8080/api/face', {
+            method: 'POST',
+            body:JSON.stringify({
+              id: id
+            }) // 这里是请求对象
+          }).then(response => response.json())
+            .then(json => {
+              //this.tables = json[0]
+              this.tables = json;
+              console.log("我请求的数据："+json)
+            })
         }
       },
       computed: {
